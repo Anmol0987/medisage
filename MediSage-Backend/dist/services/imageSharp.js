@@ -15,18 +15,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.preprocessImage = void 0;
 const sharp_1 = __importDefault(require("sharp"));
 const preprocessImage = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("inside");
     const outputPath = filePath.replace(/\.(jpg|jpeg|png)$/i, "_preprocessed.png");
     const image = (0, sharp_1.default)(filePath);
     const metadata = yield image.metadata();
-    console.log("metadata", metadata);
-    const zoomFactor = 1.2;
-    const cropWidth = Math.floor(metadata.width / zoomFactor);
-    const cropHeight = Math.floor(metadata.height / zoomFactor);
-    const left = Math.floor((metadata.width - cropWidth) / 2);
-    const top = Math.floor((metadata.height - cropHeight) / 2);
+    const cropMarginPercent = 0.05;
+    const cropLeft = Math.floor(metadata.width * cropMarginPercent);
+    const cropTop = Math.floor(metadata.height * cropMarginPercent);
+    const cropWidth = Math.floor(metadata.width - 2 * cropLeft);
+    const cropHeight = Math.floor(metadata.height - 2 * cropTop);
     const pipeline = image
-        .extract({ width: cropWidth, height: cropHeight, left, top })
-        .resize({ width: metadata.width, height: cropHeight })
+        .extract({
+        width: cropWidth,
+        height: cropHeight,
+        left: cropLeft,
+        top: cropTop,
+    })
         .greyscale()
         .normalize()
         .modulate({
