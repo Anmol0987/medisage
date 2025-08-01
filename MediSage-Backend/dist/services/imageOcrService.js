@@ -13,17 +13,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.extractTextFromImage = void 0;
-const tesseract_js_1 = __importDefault(require("tesseract.js"));
+const tesseract_js_1 = require("tesseract.js");
 const imageSharp_1 = require("./imageSharp");
 const TextCleanUp_1 = __importDefault(require("../utils/TextCleanUp"));
 const extractTextFromImage = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log(`Starting OCR for image: ${filePath}`);
         const imageBuffer = yield (0, imageSharp_1.preprocessImage)(filePath);
-        const response = yield tesseract_js_1.default.recognize(imageBuffer, "eng", {
-            logger: (m) => console.log(m),
+        const worker = yield (0, tesseract_js_1.createWorker)("eng", 1);
+        yield worker.setParameters({
+            tessedit_char_whitelist: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ%/.-:,",
+            preserve_interword_spaces: "1",
+            tessedit_pageseg_mode: tesseract_js_1.PSM.SPARSE_TEXT,
         });
-        const { text } = response.data;
+        const { data: { text }, } = yield worker.recognize(imageBuffer);
+        yield worker.terminate();
         console.log("imagetext", text);
         return (0, TextCleanUp_1.default)(text);
     }

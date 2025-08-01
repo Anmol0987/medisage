@@ -1,4 +1,4 @@
-import Tesseract from "tesseract.js";
+import { createWorker, PSM } from "tesseract.js";
 import { preprocessImage } from "./imageSharp";
 import cleanExtractedText from "../utils/TextCleanUp";
 
@@ -8,10 +8,20 @@ export const extractTextFromImage = async (
   try {
     console.log(`Starting OCR for image: ${filePath}`);
     const imageBuffer = await preprocessImage(filePath);
-    const response = await Tesseract.recognize(imageBuffer, "eng", {
-      logger: (m) => console.log(m),
+    const worker = await createWorker("eng", 1);
+
+    await worker.setParameters({
+      tessedit_char_whitelist:
+        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ%/.-:,",
+      preserve_interword_spaces: "1",
+      tessedit_pageseg_mode: PSM.SPARSE_TEXT,
     });
-    const { text } = response.data;
+
+    const {
+      data: { text },
+    } = await worker.recognize(imageBuffer);
+
+    await worker.terminate();
     console.log("imagetext", text);
     return cleanExtractedText(text);
   } catch (error) {
@@ -19,4 +29,3 @@ export const extractTextFromImage = async (
     throw new Error("Failed to extract text from image");
   }
 };
-
