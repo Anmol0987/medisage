@@ -1,8 +1,3 @@
-const App = () => {
-  return (
-    <div className="App">
-      <h1>MediSage Frontend</h1>
-    </div>
-  );
-};
-export default App;
+export default function App() {
+  return <h1 className="text-3xl text-primary font-bold underline">Hello world!</h1>;
+}
