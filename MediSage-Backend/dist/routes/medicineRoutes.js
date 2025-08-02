@@ -6,5 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const medicineController_1 = require("../controllers/medicineController");
 const router = express_1.default.Router();
-router.get('/', medicineController_1.getMedicineDetailByName);
+router.post('/', medicineController_1.getMedicineDetailByName);
 exports.default = router;

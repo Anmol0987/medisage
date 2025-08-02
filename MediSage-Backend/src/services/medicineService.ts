@@ -32,13 +32,12 @@ Return ONLY valid JSON (no markdown, no extra text):
 
 Keep all fields concise. No markdown formatting. Start response with { and end with }.
 `;
-    console.log("before response", prompt);
-    console.log("model", model);
     const result = await model.generateContent(prompt);
 
     const response = await result.response;
     const responseText = response.text();
     const cleanObject: MedicineCreateData = JSON.parse(responseText);
+    console.log("ai Object", cleanObject);
     return cleanObject;
   } catch (error) {
     return null;

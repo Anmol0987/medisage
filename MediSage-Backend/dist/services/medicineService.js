@@ -38,12 +38,11 @@ Return ONLY valid JSON (no markdown, no extra text):
 
 Keep all fields concise. No markdown formatting. Start response with { and end with }.
 `;
-        console.log("before response", prompt);
-        console.log("model", model);
         const result = yield model.generateContent(prompt);
         const response = yield result.response;
         const responseText = response.text();
         const cleanObject = JSON.parse(responseText);
+        console.log("ai Object", cleanObject);
         return cleanObject;
     }
     catch (error) {

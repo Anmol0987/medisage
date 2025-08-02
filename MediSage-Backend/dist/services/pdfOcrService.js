@@ -52,15 +52,15 @@ const extractTextFromScannedPdf = (pdfPath_1, ...args_1) => __awaiter(void 0, [p
             const pageText = yield (0, imageOcrService_1.extractTextFromImage)(imagePath);
             console.log("pagetext", pageText);
             combinedText += "\n" + pageText;
-            // if (fs.existsSync(result.path)) {
-            //   fs.unlinkSync(result.path);
-            // }
+            if (fs_1.default.existsSync(result.path)) {
+                fs_1.default.unlinkSync(result.path);
+            }
         }
     }
     finally {
-        // if (fs.existsSync(tempDir)) {
-        //   fs.rmSync(tempDir, { recursive: true, force: true });
-        // }
+        if (fs_1.default.existsSync(tempDir)) {
+            fs_1.default.rmSync(tempDir, { recursive: true, force: true });
+        }
     }
     return combinedText.trim();
 });

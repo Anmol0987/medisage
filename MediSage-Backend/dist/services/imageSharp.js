@@ -34,7 +34,7 @@ const preprocessImage = (filePath) => __awaiter(void 0, void 0, void 0, function
         .greyscale()
         .normalize()
         .modulate({
-        brightness: 1.2,
+        brightness: 1.1,
         saturation: 0.0,
     })
         .linear(1.1, -20)

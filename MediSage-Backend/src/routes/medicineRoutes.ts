@@ -3,6 +3,6 @@ import { getMedicineDetailByName } from '../controllers/medicineController';
 
 const router = express.Router();
 
-router.get('/',getMedicineDetailByName);
+router.post('/',getMedicineDetailByName);
 
 export default router;

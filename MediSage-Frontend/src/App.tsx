@@ -1,3 +1,13 @@
+import { Navbar } from "./components/Navbar";
+import MedicineSearch from "./pages/medicineSearch";
+
 export default function App() {
-  return <h1 className="text-3xl text-primary font-bold underline">Hello world!</h1>;
+  return (
+    <>
+    <Navbar/>
+    <div className="flex justify-center my-10 bg-amber-300 m-auto mx-80">
+      <MedicineSearch />
+    </div>
+    </>
+  );
 }

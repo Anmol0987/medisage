@@ -5,35 +5,38 @@ import { searchIndianMedicineByAi } from "../services/medicineService";
 const prisma = new PrismaClient();
 
 export const getMedicineDetailByName = async (req: Request, res: Response) => {
-  const { name } = req.body;
-  try {
-    if (!name) {
-      return res.status(400).json({
-        error: "Medicine name is required",
-        message: "Please provide a medicine name to search",
-      });
-    }
-    let medicine: Medicine | null = await prisma.medicine.findUnique({
-      where: {
-        name: name,
-      },
+  const { nameData } = req.body;
+
+  if (!nameData || typeof nameData !== "string") {
+    return res.status(400).json({
+      error: "Medicine name is required",
+      message: "Please provide a medicine name to search",
     });
+  }
+  const name = nameData.trim().toLowerCase();
+
+  console.log("name", name);
+  try {
+    let medicine = await prisma.medicine.findUnique({
+      where: { name },
+    });
+    console.log("medicinefromDB", medicine);
     if (medicine) {
       return res.json({ success: true, medicine });
     }
     const medicineDetailByAi = await searchIndianMedicineByAi(name);
 
     if (medicineDetailByAi) {
-      //store in DB for furure reference
+      const medicine = medicineDetailByAi;
       await prisma.medicine.create({
         data: {
-          ...medicineDetailByAi,
+          ...medicine,
           language: "en",
         },
       });
       return res.json({
         success: true,
-        medicineDetailByAi,
+        medicine,
       });
     }
   } catch (error) {

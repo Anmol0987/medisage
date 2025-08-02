@@ -14,31 +14,32 @@ const client_1 = require("@prisma/client");
 const medicineService_1 = require("../services/medicineService");
 const prisma = new client_1.PrismaClient();
 const getMedicineDetailByName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name } = req.body;
-    try {
-        if (!name) {
-            return res.status(400).json({
-                error: "Medicine name is required",
-                message: "Please provide a medicine name to search",
-            });
-        }
-        let medicine = yield prisma.medicine.findUnique({
-            where: {
-                name: name,
-            },
+    const { nameData } = req.body;
+    if (!nameData || typeof nameData !== "string") {
+        return res.status(400).json({
+            error: "Medicine name is required",
+            message: "Please provide a medicine name to search",
         });
+    }
+    const name = nameData.trim().toLowerCase();
+    console.log("name", name);
+    try {
+        let medicine = yield prisma.medicine.findUnique({
+            where: { name },
+        });
+        console.log("medicinefromDB", medicine);
         if (medicine) {
             return res.json({ success: true, medicine });
         }
         const medicineDetailByAi = yield (0, medicineService_1.searchIndianMedicineByAi)(name);
         if (medicineDetailByAi) {
-            //store in DB for furure reference
+            const medicine = medicineDetailByAi;
             yield prisma.medicine.create({
-                data: Object.assign(Object.assign({}, medicineDetailByAi), { language: "en" }),
+                data: Object.assign(Object.assign({}, medicine), { language: "en" }),
             });
             return res.json({
                 success: true,
-                medicineDetailByAi,
+                medicine,
             });
         }
     }
