@@ -35,7 +35,24 @@ const getMedicineDetailByName = (req, res) => __awaiter(void 0, void 0, void 0, 
         if (medicineDetailByAi) {
             const medicine = medicineDetailByAi;
             yield prisma.medicine.create({
-                data: Object.assign(Object.assign({}, medicine), { language: "en" }),
+                data: {
+                    name: medicine.name.toLocaleLowerCase(),
+                    description: medicine.description.toLocaleLowerCase(),
+                    genericName: medicine.genericName,
+                    brandNames: medicine.brandNames,
+                    manufacturer: medicine.manufacturer,
+                    price: medicine.price,
+                    usage: medicine.usage,
+                    sideEffects: medicine.sideEffects,
+                    idealTiming: medicine.idealTiming,
+                    warnings: medicine.warnings,
+                    scheduleType: medicine.scheduleType,
+                    prescriptionRequired: medicine.prescriptionRequired,
+                    ayushApproved: medicine.ayushApproved,
+                    createdAt: medicine.createdAt,
+                    updatedAt: medicine.updatedAt,
+                    language: medicine.language
+                },
             });
             return res.json({
                 success: true,

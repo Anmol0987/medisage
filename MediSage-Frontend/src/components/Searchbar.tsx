@@ -14,7 +14,7 @@ const Searchbar = ({type,placeholder,onChange,onSearch,value}: InputProps) => {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="flex-1 rounded-md border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+        className="flex-1 rounded-md border bg-[#E3E6E8] border-secondary px-4 py-2 focus:ring-2 focus:ring-teal-100 focus:outline-none"
         onKeyDown={(e) => {
           if (e.key === "Enter") onSearch();
         }}

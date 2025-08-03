@@ -30,8 +30,22 @@ export const getMedicineDetailByName = async (req: Request, res: Response) => {
       const medicine = medicineDetailByAi;
       await prisma.medicine.create({
         data: {
-          ...medicine,
-          language: "en",
+         name:medicine.name.toLocaleLowerCase(),
+         description:medicine.description.toLocaleLowerCase(),
+         genericName:medicine.genericName,
+         brandNames:medicine.brandNames,
+         manufacturer:medicine.manufacturer,
+         price:medicine.price,
+         usage:medicine.usage,
+         sideEffects:medicine.sideEffects,
+         idealTiming:medicine.idealTiming,
+         warnings:medicine.warnings,
+         scheduleType:medicine.scheduleType,
+         prescriptionRequired:medicine.prescriptionRequired,
+         ayushApproved:medicine.ayushApproved,
+         createdAt:medicine.createdAt,
+         updatedAt:medicine.updatedAt,
+          language: medicine.language
         },
       });
       return res.json({

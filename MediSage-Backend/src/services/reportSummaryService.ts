@@ -57,7 +57,6 @@ Instructions:
 function cleanGeminiJson(text: string): string {
   let cleaned = text.trim();
 
-  // Regex to remove markdown fences like ```json ... ```
   cleaned = cleaned
     .replace(/^```(?:\w+)?/, "")
     .replace(/```$/, "")
