@@ -19,10 +19,12 @@ ${extractedText}
 """
 
 Please do the following:
-1. As a virtual doctor, extract and list all available test values (with units and reference ranges if present), sorted as they appear in the report.
-2. Clearly mark (for example, 'abnormal: true' or by labeling) which results are abnormal based on reference ranges.
-3. After the table, generate a JSON object using these fields:
+1. Identify the report name (e.g., "Complete Blood Count", "Liver Function Test", etc.) if clearly stated or can be confidently inferred. If no notable name is found, set reportName to an empty string "".
+2. As a virtual doctor, extract and list all available test values (with units and reference ranges if present), sorted as they appear in the report.
+3. Clearly mark (for example, 'abnormal: true' or by labeling) which results are abnormal based on reference ranges.
+4. After the table, generate a JSON object using these fields:
 {
+  "reportName": "Report Name or empty string",
   "extractedValues": [
     {"test": "Test Name", "value": "Result", "unit": "Unit", "referenceRange": "Range", "abnormal": true/false}
     // ...list all tests found

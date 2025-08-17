@@ -5,6 +5,8 @@ import MedicineSummaryCard from "../components/MedicineSummaryCard";
 import axios from "axios";
 import type { Medicine } from "../types/MedicineType";
 import Loader from "../components/Loader";
+import { Pill } from "lucide-react";
+import { Navbar } from "../components/Navbar";
 
 const MedicineSearch = () => {
   const [medicineData, setMedicineData] = useState<Medicine | null>(null);
@@ -25,34 +27,62 @@ const MedicineSearch = () => {
   };
 
   return (
-    <div className="bg-primary w-full p-7">
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          {" "}
-          <Searchbar
-            type="text"
-            placeholder="Enter Medicine name"
-            value={searchTerm}
-            onSearch={handleSearch}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Badges />
-          <div className="mt-3">
-            {medicineData ? (
-              <MedicineSummaryCard medicine={medicineData} />
-            ) : (
-              <div>No medicine selected yet.</div>
-            )}
-          </div>
-        </>
-      )}
-    </div>
+    <>
+      <Navbar />
+      <div className="mt- w-full bg-white p-4 shadow-xl">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            {" "}
+            <div className="mb-2 flex items-center gap-2">
+              <Pill className="h-6 w-6 text-blue-600" />
+              <h1 className="text-2xl font-bold">Medicine Search</h1>
+            </div>
+            <Searchbar
+              type="text"
+              placeholder="Enter Medicine name"
+              value={searchTerm}
+              onSearch={handleSearch}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Badges />
+            <div className="mt-3">
+              {medicineData ? (
+                <MedicineSummaryCard medicine={medicineData} />
+              ) : (
+                <div className="py-12 text-center">
+                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 p-4">
+                    <Pill className="h-8 w-8 text-blue-600" />
+                  </div>
+                  <h3 className="mb-2 text-xl font-semibold text-slate-800">
+                    Search for Medicine Information
+                  </h3>
+                  <p className="mb-4 text-slate-600">
+                    Enter a medicine name above or click on one of the suggested
+                    medicines to get detailed information.
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    Get information about dosage, side effects, pricing, and
+                    more.
+                  </p>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
-
 export default MedicineSearch;
+
+
+
+
+/////
+// BAGDES
+////
 
 const recentSearches = [
   "aciloc150",
@@ -78,8 +108,8 @@ const Badges = () => {
         <button
           className={`cursor-pointer rounded-md px-4 py-2 font-semibold ${
             selectedCategory === "recent"
-              ? "bg-secondary border-primary text-fontColor"
-              : "border-secondary bg-primary border"
+              ? "border-blue-100 bg-blue-600 text-white"
+              : "border-blue-200"
           }`}
           onClick={() => setSelectedCategory("recent")}
         >
@@ -88,15 +118,15 @@ const Badges = () => {
         <button
           className={`cursor-pointer rounded-md px-4 py-2 font-semibold ${
             selectedCategory === "popular"
-              ? "bg-secondary border-primary text-fontColor"
-              : "border-secondary bg-primary border"
+              ? "border-blue-100 bg-blue-600 text-white"
+              : "border-blue-200"
           }`}
           onClick={() => setSelectedCategory("popular")}
         >
           Popular
         </button>
       </div>
-      <div className="mt-3 flex gap-2">
+      <div className="mt-3 flex flex-wrap gap-2">
         {(selectedCategory === "recent" ? recentSearches : popularSearches).map(
           (med) => (
             <Chip key={med} text={med} />

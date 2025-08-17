@@ -1,4 +1,4 @@
-import { application, Request } from "express";
+import { Request } from "express";
 import multer, { diskStorage } from "multer";
 import path from "path";
 

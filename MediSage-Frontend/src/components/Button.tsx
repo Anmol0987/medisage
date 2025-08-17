@@ -4,7 +4,7 @@ type ButtonProps = {
 };
 const Button = ({ text,onClick }: ButtonProps) => {
   return (
-    <button onClick={onClick} className="rounded-md bg-secondary px-6 py-2 text-text transition hover:bg-teal-700 hover:transition-all hover:text-white">
+    <button onClick={onClick} className="rounded-md bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700 hover:transition-all hover:text-white">
       {text}
     </button>
   );
