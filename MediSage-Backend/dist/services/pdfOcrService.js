@@ -45,6 +45,8 @@ const extractTextFromScannedPdf = (pdfPath_1, ...args_1) => __awaiter(void 0, [p
             };
             const convert = (0, pdf2pic_1.fromPath)(pdfPath, options);
             const result = yield convert(p);
+            if (!result.path)
+                return "";
             const processedImagePath = yield (0, imageSharp_1.preprocessImage)(result.path);
             const imagePath = typeof processedImagePath === "string"
                 ? processedImagePath

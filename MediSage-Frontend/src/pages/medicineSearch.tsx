@@ -16,7 +16,7 @@ const MedicineSearch = () => {
     const response = await axios.post("http://localhost:3000/api/medicine", {
       nameData: medicineName,
     });
-    console.log(response.data);
+    console.log("------",response.data);
     setMedicineData(response.data.medicine);
     setIsLoading(false);
   };

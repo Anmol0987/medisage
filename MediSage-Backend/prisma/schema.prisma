@@ -52,6 +52,8 @@ model Medicine {
   scheduleType         String?
   prescriptionRequired Boolean  @default(true)
   ayushApproved        Boolean  @default(false)
+  imagePrompt          String?
+  imageUrl             String?
   language             String   @default("en")
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt

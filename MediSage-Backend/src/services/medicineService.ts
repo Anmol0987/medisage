@@ -1,6 +1,6 @@
-// src/services/medicineService.ts
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Medicine, Prisma } from "@prisma/client";
+import { getImageFromPrompt } from "./getImageFromPrompt";
 
 const generateAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 export type MedicineCreateData = Prisma.MedicineCreateInput;
@@ -20,14 +20,15 @@ Return ONLY valid JSON (no markdown, no extra text):
   "genericName": "generic name or null",
   "brandNames": ["brand1", "brand2"],
   "manufacturer": "manufacturer name or null",
-  "price": "price in INR ",
+  "price": "price in INR",
   "description": "brief description (max 50 words)",
   "usage": "how to take (max 30 words)",
   "sideEffects": "main side effects (max 25 words)",
   "idealTiming": "when to take (max 15 words)",
   "warnings": "key warnings only (max 20 words)",
-  "prescriptionRequired": true/false
+  "prescriptionRequired": true/false,
   "ayushApproved": true/false,
+  "imagePrompt": "short visual description suitable for generating or searching medicine image (e.g., 'strip of Dolo 650 tablets white and blue packaging')"
 }
 
 Keep all fields concise. No markdown formatting. Start response with { and end with }.
@@ -37,7 +38,12 @@ Keep all fields concise. No markdown formatting. Start response with { and end w
     const response = await result.response;
     const responseText = response.text();
     const cleanObject: MedicineCreateData = JSON.parse(responseText);
-    console.log("ai Object", cleanObject);
+    console.log("ai Object", cleanObject.imagePrompt);
+    
+    if (cleanObject.imagePrompt) {
+      const imageUrl = await getImageFromPrompt(cleanObject.imagePrompt);
+      cleanObject.imageUrl = imageUrl || null;
+    }
     return cleanObject;
   } catch (error) {
     return null;

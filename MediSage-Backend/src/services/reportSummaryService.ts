@@ -7,42 +7,35 @@ export const generateMedicalReportSummary = async (
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const prompt = `
-You are MedBot, an AI doctor. Act as a caring, knowledgeable digital physician for the patient.
+You are MedBot, an AI doctor. Follow the examples and then process the new input.
 
-Analyze the following medical report text and create a detailed, patient-friendly JSON response in ${
-      language === "hi" ? "Hindi and English" : "English"
-    }.
+Example 1:
+Medical report text:
+"""
+Hemoglobin: 13.5 g/dL (Normal: 12–16)
+WBC: 7200 /µL (Normal: 4000–11000)
+Platelets: 250,000 /µL (Normal: 150,000–450,000)
+"""
+Output:
+{
+  "reportName": "Complete Blood Count",
+  "extractedValues": [
+    {"test": "Hemoglobin", "value": "13.5", "unit": "g/dL", "referenceRange": "12–16", "abnormal": false},
+    {"test": "WBC", "value": "7200", "unit": "/µL", "referenceRange": "4000–11000", "abnormal": false},
+    {"test": "Platelets", "value": "250,000", "unit": "/µL", "referenceRange": "150,000–450,000", "abnormal": false}
+  ],
+  "summary": "All parameters are within normal range.",
+  "abnormalFindings": [],
+  "recommendations": "Your test results are all within normal limits—no cause for concern.",
+  "disclaimer": "AI-generated summary. Consult your doctor if unsure."
+}
 
+Now process the following:
 Medical report text:
 """
 ${extractedText}
 """
-
-Please do the following:
-1. Identify the report name (e.g., "Complete Blood Count", "Liver Function Test", etc.) if clearly stated or can be confidently inferred. If no notable name is found, set reportName to an empty string "".
-2. As a virtual doctor, extract and list all available test values (with units and reference ranges if present), sorted as they appear in the report.
-3. Clearly mark (for example, 'abnormal: true' or by labeling) which results are abnormal based on reference ranges.
-4. After the table, generate a JSON object using these fields:
-{
-  "reportName": "Report Name or empty string",
-  "extractedValues": [
-    {"test": "Test Name", "value": "Result", "unit": "Unit", "referenceRange": "Range", "abnormal": true/false}
-    // ...list all tests found
-  ],
-  "summary": "A clear, doctor-style, patient-friendly explanation of the report in 2-4 sentences.",
-  "abnormalFindings": [
-    "Highlight key abnormal results and what they mean for the patient, or [] if none."
-  ],
-  "recommendations": "Doctor’s advice: If results are all normal, say 'Your test results are all within normal limits—there’s no cause to worry, and there’s no need to visit a doctor for these results unless you have symptoms.' Suggest hydration, rest, or basic OTC advice if relevant. If significant abnormalities are present, advise seeing a doctor.",
-  "disclaimer": "This is an AI-generated summary for information only and does not replace professional medical advice. Always consult a real healthcare professional for medical concerns or before taking medicines."
-}
-
-Instructions:
-- Only output valid JSON using the exact key names above.
-- Never include text outside the JSON object.
-- Use a warm, supportive tone of a trustworthy doctor.
-- In normal cases, strongly reassure: 'No cause for concern. No further action needed unless you feel symptoms.'
-- In abnormal or ambiguous cases, highlight only the key points and urge appropriate real-world follow-up.
+Return JSON only.
 `;
 
     const result = await model.generateContent(prompt);

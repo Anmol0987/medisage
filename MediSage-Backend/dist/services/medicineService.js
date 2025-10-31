@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchIndianMedicineByAi = void 0;
-// src/services/medicineService.ts
 const generative_ai_1 = require("@google/generative-ai");
+const getImageFromPrompt_1 = require("./getImageFromPrompt");
 const generateAI = new generative_ai_1.GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const searchIndianMedicineByAi = (name) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -26,14 +26,15 @@ Return ONLY valid JSON (no markdown, no extra text):
   "genericName": "generic name or null",
   "brandNames": ["brand1", "brand2"],
   "manufacturer": "manufacturer name or null",
-  "price": "price in INR ",
+  "price": "price in INR",
   "description": "brief description (max 50 words)",
   "usage": "how to take (max 30 words)",
   "sideEffects": "main side effects (max 25 words)",
   "idealTiming": "when to take (max 15 words)",
   "warnings": "key warnings only (max 20 words)",
-  "prescriptionRequired": true/false
+  "prescriptionRequired": true/false,
   "ayushApproved": true/false,
+  "imagePrompt": "short visual description suitable for generating or searching medicine image (e.g., 'strip of Dolo 650 tablets white and blue packaging')"
 }
 
 Keep all fields concise. No markdown formatting. Start response with { and end with }.
@@ -42,7 +43,11 @@ Keep all fields concise. No markdown formatting. Start response with { and end w
         const response = yield result.response;
         const responseText = response.text();
         const cleanObject = JSON.parse(responseText);
-        console.log("ai Object", cleanObject);
+        console.log("ai Object", cleanObject.imagePrompt);
+        if (cleanObject.imagePrompt) {
+            const imageUrl = yield (0, getImageFromPrompt_1.getImageFromPrompt)(cleanObject.imagePrompt);
+            cleanObject.imageUrl = imageUrl || null;
+        }
         return cleanObject;
     }
     catch (error) {

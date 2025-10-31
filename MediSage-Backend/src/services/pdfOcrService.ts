@@ -39,6 +39,8 @@ const extractTextFromScannedPdf = async (
 
       const convert = fromPath(pdfPath, options);
       const result = await convert(p);
+      if(!result.path)
+        return ""
       const processedImagePath = await preprocessImage(result.path);
       const imagePath =
         typeof processedImagePath === "string"

@@ -13,6 +13,8 @@ export type Medicine = {
   scheduleType: string | null;
   prescriptionRequired: boolean;
   ayushApproved: boolean;
+  imagePrompt: string | null;
+  imageUrl: string | null;
   language: string;
   createdAt: string | Date;
   updatedAt: string | Date;
