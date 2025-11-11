@@ -61,8 +61,11 @@ const ReportsSummaryCard = ({ report }: ReportSummaryProps) => {
           </div>
           <ul className="list-inside list-disc text-red-700">
             {report.abnormalFindings.map((finding, idx) => (
-              <li key={idx}>{finding}</li>
-            ))}
+              <li key={idx}>
+                <span className="font-semibold">{finding.test}</span>:{" "}
+                {finding.finding}
+              </li>
+            ))}{" "}
           </ul>
         </div>
       )}

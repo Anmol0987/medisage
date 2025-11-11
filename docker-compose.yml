@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: ./MediSage-Backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./MediSage-Backend/.env
+    container_name: medisage-backend
+    restart: always
+
+  frontend:
+    build:
+      context: ./MediSage-Frontend
+      dockerfile: Dockerfile
+    ports: 
+      - "5173:80"
+    container_name: medisage-frontend
+    depends_on:
+      - backend
+    restart: always

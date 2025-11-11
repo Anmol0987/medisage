@@ -1,6 +1,6 @@
 import { PrismaClient, Medicine } from "@prisma/client";
 import { Request, Response } from "express";
-import { searchIndianMedicineByAi } from "../services/medicineService";
+import { searchIndianMedicineByAi } from "../services/medicineSummaryService";
 
 const prisma = new PrismaClient();
 

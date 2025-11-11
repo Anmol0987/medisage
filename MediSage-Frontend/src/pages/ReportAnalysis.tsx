@@ -49,7 +49,7 @@ const ReportAnalysis = () => {
         },
       );
       console.log("---", res.data.data.AISummary);
-      setReportData(res.data.data.AISummary);
+      setReportData(res.data.data.AISummary``);
     } catch (err) {
       console.error("Upload error:", err);
     }

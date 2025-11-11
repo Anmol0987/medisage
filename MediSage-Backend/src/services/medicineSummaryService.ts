@@ -28,7 +28,7 @@ Return ONLY valid JSON (no markdown, no extra text):
   "warnings": "key warnings only (max 20 words)",
   "prescriptionRequired": true/false,
   "ayushApproved": true/false,
-  "imagePrompt": "short visual description suitable for generating or searching medicine image (e.g., 'strip of Dolo 650 tablets white and blue packaging')"
+  "imagePrompt": ""Concise, clear visual description of the medicine or medical item suitable for generating or searching a realistic stock photo (e.g., 'close-up of a strip of Dolo 650 tablets in white and blue packaging on a clean background, medical photography style').""
 }
 
 Keep all fields concise. No markdown formatting. Start response with { and end with }.
@@ -40,10 +40,10 @@ Keep all fields concise. No markdown formatting. Start response with { and end w
     const cleanObject: MedicineCreateData = JSON.parse(responseText);
     console.log("ai Object", cleanObject.imagePrompt);
     
-    if (cleanObject.imagePrompt) {
-      const imageUrl = await getImageFromPrompt(cleanObject.imagePrompt);
-      cleanObject.imageUrl = imageUrl || null;
-    }
+    // if (cleanObject.imagePrompt) {
+    //   const imageUrl = await getImageFromPrompt(cleanObject.imagePrompt);
+    //   cleanObject.imageUrl = imageUrl || null;
+    // }
     return cleanObject;
   } catch (error) {
     return null;
