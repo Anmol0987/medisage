@@ -48,8 +48,8 @@ const ReportAnalysis = () => {
           headers: { "Content-Type": "multipart/form-data" },
         },
       );
-      console.log("---", res.data.data.AISummary);
-      setReportData(res.data.data.AISummary``);
+      const resData =res.data.data.AISummary
+      setReportData(resData);
     } catch (err) {
       console.error("Upload error:", err);
     }

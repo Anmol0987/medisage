@@ -10,6 +10,7 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<MedicineSearch />} />
+
               <Route path="/report" element={<ReportAnalysis />} />
             </Routes>
           </BrowserRouter>

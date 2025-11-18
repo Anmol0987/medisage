@@ -3,6 +3,7 @@ import cors from "cors";
 import medicineRoutes from "./routes/medicineRoutes";
 import reportRoutes from "./routes/reportRoutes";
 
+require('dotenv').config()
 const app= express()
 app.use(cors())
 app.use(express.json())

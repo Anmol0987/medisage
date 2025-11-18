@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMedicineDetailByName = void 0;
 const client_1 = require("@prisma/client");
-const medicineService_1 = require("../services/medicineService");
+const medicineSummaryService_1 = require("../services/medicineSummaryService");
 const prisma = new client_1.PrismaClient();
 const getMedicineDetailByName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nameData } = req.body;
@@ -32,7 +32,7 @@ const getMedicineDetailByName = (req, res) => __awaiter(void 0, void 0, void 0, 
         if (medicine) {
             return res.json({ success: true, medicine });
         }
-        const medicineDetailByAi = yield (0, medicineService_1.searchIndianMedicineByAi)(name);
+        const medicineDetailByAi = yield (0, medicineSummaryService_1.searchIndianMedicineByAi)(name);
         if (!medicineDetailByAi) {
             return res.status(404).json({
                 success: false,
